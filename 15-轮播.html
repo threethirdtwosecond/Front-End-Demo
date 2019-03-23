@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        #slider {position:relative;}
+        #slider::after {content:'';display:block;clear:both;}
+        #slider ul {list-style:none;padding:0;}
+        #slider .list {position:relative;width:600px;height:300px;}
+        #slider ul::after {content:'';display:block;clear:both;}
+        #slider .list li {width:inherit;height:300px;position:absolute;}
+        #slider .list img {width:100%;height:100%;display:block;animation:fadein 2s;}
+        #slider .count {position:absolute;right:10px;bottom:10px;z-index:1;}
+        #slider .count li {float:left;margin:0 5px;background:#fff;width:20px;height:20px;text-align:center;line-height:20px;border-radius:50%;}
+        #slider .count li:hover {cursor:pointer;}
+        .current {background:#0ae !important;display:block;}
+        @keyframes fadein {from {opacity:0;} to {opacity:1;}}
+    </style>
+</head>
+<body>
+    <div id="slider">
+        <ul class="list">
+            <li><img src="https://s2.ax1x.com/2019/03/07/kxQJ4P.jpg" alt="kxQJ4P.jpg"></li>
+            <li><img src="https://s2.ax1x.com/2019/03/07/kxQ8AI.jpg" alt="kxQ8AI.jpg"></li>
+            <li><img src="https://s2.ax1x.com/2019/03/07/kxQ1HA.jpg" alt="kxQ1HA.jpg"></li>
+            <li><img src="https://s2.ax1x.com/2019/03/07/kxQGNt.jpg" alt="kxQGNt.jpg"></li>
+            <li><img src="https://s2.ax1x.com/2019/03/07/kxQlBd.jpg" alt="kxQlBd.jpg"></li>
+        </ul>
+        <ul class="count">
+            <li class="current">1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+        </ul>
+    </div>
+</body>
+<script>
+    var slider = document.querySelector("#slider");
+    var img = document.querySelectorAll(".list img");
+    var count = document.querySelectorAll(".count li");
+    var i = index = 0;
+    var timer = null;
+    var bOrder = true;
+
+    // 鼠标 hover 切换图片
+    for (i = 0; i < count.length; i++) {
+        count[i].index = i;
+        count[i].onmouseover = function(){
+            show(this.index)
+            index = this.index;
+        }
+    }
+
+    // 鼠标悬浮在图片上停止自动播放函数
+    slider.onmouseover = function(){
+        clearInterval(timer);
+    }
+
+    // 鼠标离开图片执行自动播放函数
+    slider.onmouseout = function(){
+        autoPlay()
+    }
+
+    // 轮播函数
+    function show(index){
+        //除第一张图片，其余图片不显示
+        for (i = 1; i < img.length; i++) img[i].style.display = "none";
+
+        // 清除所有图片的class，并将当前所
+        for (i = 0; i < img.length; i++) {
+            img[i].style.display = "none";
+            count[i].className = "";
+        }
+
+        count[index].className = "current";
+        img[index].style.display = "block";
+        
+    }
+
+    // 自动播放函数
+    function autoPlay(){
+        timer = setInterval(()=>{
+            
+            // 判断播放顺序
+            bOrder ? index++ : index--;
+            
+            // 正序
+            index >= img.length && (index = img.length - 2, bOrder = false);
+
+            //倒序
+            index <= 0 && (index = 0, bOrder = true);
+            
+            show(index);
+        },2000)
+    }
+
+    // 开始自动播放
+    autoPlay()
+</script>
+</html>
+<!--
+    <li><img src="https://s2.ax1x.com/2019/03/07/kxQJ4P.jpg" alt="kxQJ4P.jpg"></li>
+    <li><img src="https://s2.ax1x.com/2019/03/07/kxQ8AI.jpg" alt="kxQ8AI.jpg"></li>
+    <li><img src="https://s2.ax1x.com/2019/03/07/kxQ1HA.jpg" alt="kxQ1HA.jpg"></li>
+    <li><img src="https://s2.ax1x.com/2019/03/07/kxQGNt.jpg" alt="kxQGNt.jpg"></li>
+    <li><img src="https://s2.ax1x.com/2019/03/07/kxQlBd.jpg" alt="kxQlBd.jpg"></li>
+-->

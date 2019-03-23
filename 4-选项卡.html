@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>选项卡</title>
+    <style>
+        body {
+            display:flex;
+            justify-content: center;
+        }
+
+        .tab-header {
+            height:30px;
+            background:#333;
+            color:#fff;
+            line-height:30px;
+        }
+        .tab-header span {
+            display:inline-block;
+            margin-right:5px;
+            font-size:16px;
+            padding:0 3px;
+        }
+        .tab-header span:hover {
+            background:darkgray;
+            cursor:pointer;
+            color:#000;
+        }
+        .tab-content {
+            border:1px solid;
+        }
+        .tab-content ul {
+            display:none;
+        }
+        .current {
+            display:block !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab">
+        <div class="tab-header">
+            <span>First Class</span>
+            <span>Second Class</span>
+            <span>Third Class</span>
+        </div>
+        <div class="tab-content">
+            <ul class="current">
+                <li>I love you</li>
+                <li>I love you</li>
+                <li>I love you</li>
+                <li>I love you</li>
+                <li>I love you</li>
+                <li>I love you</li>
+            </ul>
+            <ul>
+                <li>I hate you</li>
+                <li>I hate you</li>
+                <li>I hate you</li>
+            </ul>
+            <ul>
+                <li>I like you</li>
+                <li>I like you</li>
+                <li>I like you</li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+    var tab_header =  document.querySelectorAll('.tab-header > span');
+    var tab_content = document.querySelectorAll('.tab-content > ul');
+
+    for(var i = 0; i < tab_header.length; i++) {
+        console.log(tab_header[i]);
+        tab_header[i].index = i;
+        tab_header[i].onmouseover = function (){
+            console.log(this.index)
+            for(var i = 0; i < tab_header.length; i++) tab_content[i].className = "";
+            tab_content[this.index].className = "current";
+        }
+    }
+    /*
+    tab_header[0].onmouseover = function (){
+        for(var i = 0; i < 3; i++) tab_content[i].className = "";
+        tab_content[0].className = "current"
+    }
+    tab_header[1].onmouseover = function (){
+        for(var i = 0; i < 3; i++) tab_content[i].className = "";
+        tab_content[1].className = "current"
+    }
+    tab_header[2].onmouseover = function (){
+        for(var i = 0; i < 3; i++) tab_content[i].className = "";
+        tab_content[2].className = "current"
+    }*/
+</script>
+</html>

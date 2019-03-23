@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>arguments应用</title>
+    <style>
+        pre {border:1px dashed green;background:lightgray;padding:10px;color:green;font-size:1.5em;}
+    </style>
+</head>
+<body>
+    <pre>
+        &lt;script type="text/javascript"&gt;
+        var i = iResult = 0
+        function getTotal()
+        {
+        for (var i = 0; i < arguments.length; i++) { iResult +=arguments[i] } return iResult } <span>//应用</span>
+            alert(getTotal(1,2,3,4,5,6,7,8,9,10)) <span>//输出55</span>
+        &lt;/script&gt;
+    </pre>
+</body>
+<script>
+    var i = iResult = 0;
+    function getTotal(){
+        for(i = 0; i < arguments.length; i++) { iResult += arguments[i]}
+        return iResult;
+    }
+    alert(getTotal(1,2,3,4,5,6,7,8,9,10))
+</script>
+</html>

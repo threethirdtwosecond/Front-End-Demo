@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <style>
+        
+        .main {
+            width:300px;
+            text-align: center;
+            margin:0 auto;
+        }
+        .main > * {
+            margin:5px;
+        }
+        .display {
+            width:200px;
+            height:200px;
+            background:black;
+            margin:5px auto;
+            color:white;
+            text-align:left;
+        }
+    </style>
+    <script src="jquery-3.3.1/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div class="main">
+        <label for="prop-name">属性名:</label>
+        <input type="text" id="prop-name"><br>
+        <label for="prop-value">属性值:</label>
+        <input type="text" id="prop-value"><br>
+        <button>确定</button>
+        <button>重置</button>
+        <div class="display">在上方输入框输入"属性名"及"属性值"，点击确定按钮查看效果。</div>
+    </div>
+<script>
+    var prop_name = document.querySelector('#prop-name'),
+        prop_value = document.querySelector('#prop-value'),
+        yes = document.querySelectorAll('button')[0],
+        reset = document.querySelectorAll('button')[1],
+        display = document.querySelector('.display');
+        console.log(display);
+    yes.onclick = function(){
+        display.style.cssText = prop_name.value + ':' + prop_value.value;
+    }
+    reset.onclick = function(){
+        display.style.cssText = '';
+    }
+    
+</script>
+</body>
+</html>

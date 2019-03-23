@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>获取元素样式</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        #box {min-width:300px;height:200px;border:1px solid orange;padding:1%;white-space:nowrap;background:rgba()}
+        #box input {height:30px;line-height:30px;padding:5px;text-align:center; background:orange;border:none;box-sizing:border-box;}
+        #box input:hover {cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div id="box">
+        <input type="text" value="Get Style" readonly="readonly">
+        
+        
+    </div>
+</body>
+<script>
+    var aInput = document.querySelectorAll("#box > input");
+    var oBox = document.querySelector("#box");
+    var oStyle = document.querySelector("style");
+
+    aInput[0].onclick = function(){
+        getCss("#box input")
+    }
+
+    function getCss(ele) {
+        // 自动添加一个空格
+        ele += " ";
+        var rReg = new RegExp(ele + "{(.*)}","g")
+        
+        var sStyle = oStyle.innerHTML.match(rReg).toString().replace(rReg,"$1");
+        var sCss = sStyle.split(";").join("\n");
+        
+        alert(sCss);
+    }
+    
+
+</script>
+</html>

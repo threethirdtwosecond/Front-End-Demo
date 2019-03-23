@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>跟随鼠标移动</title>
+    <style>
+        body {text-align:center;position:relative;}
+        #box img {width:170px;height:170px;margin-right:20px;border:1px solid lightgray;}
+        #box img:hover {border:1px solid #0ae;}
+        #big img {display:none;border:1px solid;position:absolute;}
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <img src="img/26/shirt_1.jpg" alt="">
+        <img src="img/26/shirt_2.jpg" alt="">
+        <img src="img/26/shirt_3.jpg" alt="">
+        <img src="img/26/shirt_4.jpg" alt="">
+    </div>
+    <div id="big">
+        <img src="" alt="">
+    </div>
+</body>
+<script>
+    var oBox = document.querySelector("#box");
+    var oBig = document.querySelector("#big > img");
+    var aImg = oBox.querySelectorAll("img");
+    var i = 0;
+    var aBig = [
+        "img/26/shirt_1_big.jpg",
+        "img/26/shirt_2_big.jpg",
+        "img/26/shirt_3_big.jpg",
+        "img/26/shirt_4_big.jpg"
+    ]
+    
+    for(i = 0; i < aImg.length; i++){
+        aImg[i].index = i;
+        // 鼠标悬浮设置为当前图片的路径
+        aImg[i].onmouseover = function(e){
+            oBig.setAttribute("src",aBig[this.index]);
+            oBig.style.display = "block";
+            
+        }
+        
+        // 鼠标在小图片上移动改变大图的坐标
+        aImg[i].onmousemove = function(e) {
+            // 判断大图到右边的距离是否大于大图图的宽度，否的话就减去大图的宽度
+            oBig.style.left = (document.body.offsetWidth - e.clientX) > oBig.offsetWidth ? e.clientX + 20 + "px" : e.clientX - oBig.offsetWidth - 20 + "px";
+            // 跟随鼠标上下移动
+            oBig.style.top = e.clientY + 10 + "px"
+        }
+        
+        // 鼠标离开 大图消失
+        aImg[i].onmouseout = function(){
+            oBig.style.display = "none"
+        }
+    }
+    
+    // Bug : 鼠标快速移动过程中会有闪烁 不流畅
+    // solution: 使大图的同鼠标有一定的距离 bug的原因是鼠标移动过快会悬浮到大图上
+</script>
+</html>

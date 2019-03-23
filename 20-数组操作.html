@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数组操作</title>
+    <style>
+        div {min-height:30px;width:100%;border: 1px dashed green;background: lightgray;margin: 10px 0;word-spacing: 5px;padding-left:10px;box-sizing:border-box;padding:5px;}
+    </style>
+</head>
+
+<body>
+    <div>January(1) February(2) March(3) April(4) May(5) June(6) July(7) Aguest(8) September(9) October(10) November(11) December(12)</div>
+    <input type="button" value="删除第一项">
+    <input type="button" value="删除最后一项">
+    <input type="button" value="还原">
+    <div>0 1 2 3 4 5 6 7 8 9 </div>
+    <input type="button" value="复制">
+    <input type="button" value="还原">
+    <div>blue orange red purple yellow brown green</div>
+    <input type="button" value="还原">
+    <input type="button" value="删除前三项">
+    <input type="button" value="删除二至三项">
+    <input type="button" value="在第二项后插入">
+    <input type="button" value="替换第二项">
+</body>
+<script>
+    var aDiv = document.querySelectorAll("div");
+    var aInput = document.querySelectorAll("input");
+    var _array = [], reset = [];
+   
+    for(var i = 0; i < aDiv.length; i++) _array.push(aDiv[i].innerHTML.split(" "));
+    for(var j = 0; j < aDiv.length; j++) reset[j] = _array[j].slice();
+    
+   
+    // 删除第一项
+    aInput[0].onclick = function(){
+        _array[0].shift();
+        aDiv[0].innerHTML = _array[0].join(" ");
+    }
+    
+    // 删除最后一项
+    aInput[1].onclick = function(){
+        _array[0].pop();
+        aDiv[0].innerHTML = _array[0].join(" ");
+    }
+    
+    // 还原第一个div
+    aInput[2].onclick = function(){
+        aDiv[0].innerHTML = reset[0];
+    }
+    
+    // 复制
+    aInput[3].onclick = function(){
+        aDiv[1].innerHTML += aDiv[1].innerHTML
+    }
+    
+    // 还原第第二个div
+    aInput[4].onclick = function(){
+        aDiv[1].innerHTML = reset[1].join(" ");
+    }
+    
+    // 还原第三个div
+    aInput[5].onclick = function(){
+        _array[2] = reset[2].slice();
+        aDiv[2].innerHTML = reset[2].join(" ");
+        console.log(reset[2])
+    }
+    
+    // 第三个div 删除前三项
+    aInput[6].onclick = function(){
+        _array[2].splice(0,3)
+        aDiv[2].innerHTML = _array[2].join(" ")
+    }
+    
+    // 第三个div，删除二至三项
+    aInput[7].onclick = function(){
+        _array[2].splice(1,2)
+        aDiv[2].innerHTML = _array[2].join(" ")
+    }
+    
+    // 第三个div， 在第二项后插入 lightgray
+    aInput[8].onclick = function(){
+        
+        _array[2].splice(2,0,"lightgray");
+        aDiv[2].innerHTML = _array[2].join(" ")
+    }
+    
+    // 第三个div， 替换第二项
+    aInput[9].onclick = function(){
+        _array[2].splice(1,1,"black");
+        aDiv[2].innerHTML = _array[2].join(" ")
+    }
+</script>
+</html>

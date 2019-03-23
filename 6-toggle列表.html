@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Toggle列表</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        ul {list-style:none;}
+        .list {}
+        .list li {padding:0 10px;border-bottom:1px solid #fff;}
+        .list .header {height:30px;background:gray;line-height:30px;color:#fff;display:flex;justify-content: space-between;}
+        .list .header:hover {cursor:pointer;}
+        .list .items {display:block;}
+        .list .item {background:lightgray;font-size:14px;height:25px;line-height:25px;}
+        .list a {text-decoration:none;color:#333;display:block;width:100%;}
+        .item:hover {text-decoration:underline;background:lightblue;}
+        .up-triangle {position:relative;}
+        .up-triangle::before {content:'';position: absolute;top:50%;right:0;transform:translate(0,-50%);height:0;width:0;border-left:10px solid transparent;border-right:10px solid transparent;border-bottom:10px solid red;}
+        .down-triangle {position:relative;}
+        .down-triangle::before {content:'';position: absolute;top:50%;right:0;transform:translate(0,-50%);height:0;width:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid red;}
+    </style>
+</head>
+<body>
+    <ul class="list">
+        <li class="header">
+            <span>播放列表</span>
+            <i class="down-triangle"></i>
+        </li> 
+        <div class="items">
+            <li class="item"><a href="">我想你 - 大漠</a></li>
+            <li class="item"><a href="">猪之歌 - 朱朱</a></li>
+            <li class="item"><a href="">直到世界尽头 - 灌篮高手</a></li>
+            <li class="item"><a href="">渐渐被你吸引 - 龙珠GT主题曲</a></li>
+            <li class="item"><a href="">天空之城 - 久石让</a></li>
+        </div>
+        
+    </ul>
+</body>
+<script>
+    var header = document.querySelector('.header');
+    var items = document.querySelector('.items');
+    var icon = document.querySelector('.header > i');
+    var list = document.querySelector('.list');
+    var width = items.clientWidth + 'px';
+
+    list.style.width = width;
+    console.log(items.clientWidth)
+
+    header.onclick = function (){
+        items.style.display = items.style.display == 'none' ? 'block' : 'none';
+        icon.className = icon.className == "up-triangle" ? "down-triangle" : "up-triangle";
+    }
+</script>
+</html>

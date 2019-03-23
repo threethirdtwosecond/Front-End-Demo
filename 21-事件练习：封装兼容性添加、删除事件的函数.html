@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件练习：封装兼容性添加、删除事件的函数</title>
+    <style>
+        body {width:100%;text-align: center;}
+        pre {border:1px dashed green;width: 100%;font-size:1.2em;text-align: left;background:lightgray;}
+    </style>
+</head>
+    
+<body>
+   <pre>
+       var EventUtil = {
+            addHandler:function(oElement, sEvent, fnHandler) {
+                oElement.addEventListener() ? oElement.addEventListener(sEvent, fnHandler) : oElement.attachEvent("on" + sEvent, fnHandler)
+            },
+            removeHandler:function(oElement, sEvent, fnHandler) {
+                oElement.removeEventListener() ? oElement.removeEventListener(sEvent, fnHandler) : oElement.detachEvent("on" + sEvent, fnHandler)
+            },
+            addLoadHandler:function(fnHandler){
+                
+            }
+        }
+   </pre>
+    <input type="button" value="未绑定click">
+    <input type="button" value="绑定click">
+    
+</body>
+
+<script>
+    var EventUtil = {
+        addHandler:function(oElement, sEvent, fnHandler) {
+            oElement.addEventListener ? oElement.addEventListener(sEvent, fnHandler, false) : oElement.attachEvent("on" + sEvent, fnHandler)
+        },
+        removeHandler:function(oElement, sEvent, fnHandler) {
+            oElement.removeEventListener ? oElement.removeEventListener(sEvent, fnHandler, false) : oElement.detachEvent("on" + sEvent, fnHandler)
+        },
+        addLoadHandler:function(fnHandler){
+            this.addHandler(window, "load", fnHandler)
+        }
+    }
+    EventUtil.addLoadHandler(function(){
+        var btn = document.querySelectorAll("input");
+        
+        EventUtil.addHandler(btn[1], "click", function(){
+            EventUtil.addHandler(btn[0], "click", fnHandler);
+            btn[0].value = "我可以点击了";
+        })
+        
+        EventUtil.removeHandler(btn[1], "click", function(){
+            EventUtil.removeHandler(btn[0], "click", fnHandler);
+            btn[0].value = "没有用的按钮"
+        })
+        function fnHandler(){
+            alert("绑定成功！")
+        }
+    })
+    /*
+    var aInput = document.querySelectorAll("input");
+    var is_bind = false;
+    aInput[1].onclick = function(){
+        if(is_bind) {
+            aInput[0].value = "未绑定click";
+            aInput[0].removeEventListener("click",alertFunc);
+            this.value = "绑定click"
+            is_bind = !is_bind;
+        } else {
+            aInput[0].value = "已经绑定click";
+            aInput[0].addEventListener("click", alertFunc);
+            this.value = "取消绑定"
+            is_bind = !is_bind;
+        }
+        
+    }
+    function alertFunc(a){
+        alert("绑定成功")
+    }
+    */
+</script>
+</html>

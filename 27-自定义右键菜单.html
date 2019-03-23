@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义右键菜单</title>
+    <style>
+        #menu {display:none;}
+        #menu {list-style: none;position:absolute;border:1px solid;padding:0;}
+        #menu li {border-bottom:1px solid;width:60px;}
+        #menu li:hover {background:lightgray;}
+        #menu li a {display: block;width:100%;height: 100%;text-decoration: none;}
+    </style>
+</head>
+
+<body>
+    <center>任意处点击右键查看效果</center>
+    <ul id="menu">
+        <li><a href="javascript::">复制</a></li>
+        <li><a href="javascript::">粘贴</a></li>
+        <li><a href="javascript::">删除</a></li>
+    </ul>
+</body>
+<script>
+    var oMenu = document.querySelector("#menu");
+    
+
+    document.oncontextmenu = function(e){
+        e.preventDefault();
+        var iWidth = document.body.offsetWidth - e.clientX - 60;
+        oMenu.style.left = iWidth > 0 ? e.clientX + "px" : e.clientX - 60 + "px";
+        oMenu.style.top = e.clientY - 10 + "px";
+        oMenu.style.display = "block"
+    }
+    document.onclick = function(){
+        oMenu.style.display = "none";
+    }
+</script>
+</html>

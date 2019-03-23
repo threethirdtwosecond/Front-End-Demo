@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>倒计时</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        #countdown {display:flex;align-items:center;justify-content:center;background:black;padding:10px;color:#fff;}
+        #countdown > * {margin:0 10px;}
+        #countdown input {width:60px;height:30px;line-height:30px;text-align:center;color:#333;}
+    </style>
+</head>
+<body>
+    <div id="countdown">
+        <input type="text" value="0">
+        "分钟"
+        <input type="text" value="0">
+        "秒"
+        <input type="button" value="开始">
+    </div>
+</body>
+<script>
+    var oCountDown = document.querySelector("#countdown");
+    var aInput = oCountDown.querySelectorAll("input");
+    var timer = null;
+    
+    aInput[2].onclick = function(){
+        timer = setInterval(updateTime,1000)
+    }
+    
+    function updateTime(){
+        var nMinutes = parseInt(aInput[0].value);
+        var nSeconds = parseInt(aInput[1].value);
+        var nRemain = nMinutes * 60 + nSeconds;
+        
+        if(nRemain <= 0){
+            fnFinished();
+            clearInterval(timer);
+            
+            return
+        }
+        nRemain--;
+        aInput[0].value = parseInt(nRemain / 60);
+        aInput[1].value = nRemain % 60;
+    }
+    
+    // 完成函数
+    function fnFinished(){
+        var oSpan = document.createElement("span");
+        oSpan.innerHTML = "Finished!";
+        oCountDown.appendChild(oSpan)
+    }
+    
+    // bug : 计时完成到出现finished有时差
+</script>
+</html>

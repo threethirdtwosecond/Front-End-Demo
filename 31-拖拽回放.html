@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>拖拽回放</title>
+    <style>
+        body {background:black;font:12px / 2 Arial;}
+        #box {width:300px;height:150px;position:absolute;border:1px solid yellow;color:white;left:500px;top:200px;}
+        #box h2 {text-align: right;padding-right:20px;border:1px solid yellow;height:25px;line-height: 25px;margin:0;cursor: move;}
+        #box h2 a {color:white;text-decoration: none;}
+        #box p {padding-left:20px;}
+        #box p strong {margin-right:10px;}
+        #box p span {color:yellow;}
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <h2><a href="javascript::">点击回放拖动轨迹</a></h2>
+        <p><strong>Drag</strong><span></span></p>
+        <p><strong>offsetTop</strong><span></span></p>
+        <p><strong>offsetLeft</strong><span></span></p>
+    </div>
+</body>
+<script>
+    var oBox = document.querySelector("#box");
+    var aSpan = oBox.querySelectorAll("span");
+    var oH2 = oBox.querySelector("h2");
+    var oA = oH2.querySelector("a");
+    var disX = disY = 0; // 按下鼠标的初始位置
+    var bDrag = false;
+    var aPos = [{x: oBox.offsetLeft, y: oBox.offsetTop}];
+    
+    // 鼠标按下 激活拖拽
+    oH2.onmousedown = function(event){
+        var event = event || window.event;
+        bDrag = true;
+        disX = event.clientX - oBox.offsetLeft;
+        disY = event.clientY - oBox.offsetTop;
+        aPos.push({x : oBox.offsetLeft, y : oBox.offsetTop});
+        
+        // 定位当前鼠标事件
+        this.setCapture && this.setCapture(); 
+        
+        return false;
+    }
+    
+    // 拖拽开始
+    document.onmousemove = function(event){
+        if(!bDrag) return;
+        event = event || window.event;
+        var iL = event.clientX - disX; // event.clientX - (event.clientC - oBox.offsetLeft) = oBox.offsetLeft;
+        var iT = event.clientY - disY; // oBox.offsetTop
+        var maxL = document.documentElement.clientWidth - oBox.offsetWidth;
+        var maxT = document.documentElement.clientHeight - oBox.offsetHeight;
+        
+        // 防止右侧溢出
+        iL = iL < 0 ? 0 : iL;
+        iL = iL > maxL ? maxL : iL;
+        
+        // 防止底部溢出
+        iT = iT < 0 ? 0 : iT;
+        iT = iT > maxT ? maxT : iT;
+        
+        oBox.style.left = iL + "px";
+        oBox.style.top = iT + "px";
+        
+        aPos.push({x: iL, y: iT});
+        
+        status();
+        
+        return false;
+    }
+    
+    // 鼠标释放 结束拖拽
+    document.onmouseup = function(){
+        bDrag = false;
+        
+        // 释放 setCapture
+        oH2.releaseCapture && oH2.releaseCapture();
+        status();
+    }
+    
+    // 取消事件冒泡 防止oA 的onclick 传播到上层oH2,点击 oA 不会拖拽
+    oA.onmousedown = function(event){
+        (event || window.event).cancelBubble = true;
+    }
+    
+    // 回话拖拽轨迹
+    oA.onclick = function(){
+        
+        if(aPos.length == 1) return;// 如果 aPos 只剩下一个元素 回放完成
+        
+        var timer = setInterval(function(){
+            var oPos = aPos.pop(); // 返回 aPos 的最后一个元素 声明为 oPos 对象
+            
+            // 如果 oPos 为真，将其 x, y 分别赋值到 oBox 的 left 和 top 属性，否则停止 timer
+            oPos ? (oBox.style.left = oPos.x + "px", oBox.style.top = oPos.y + "px", status()) : clearInterval(timer)
+        },30)
+        
+        return false;
+    }
+    
+    // 状态函数
+    function status(){
+        aSpan[0].innerHTML = bDrag;
+        aSpan[1].innerHTML = oBox.offsetTop;
+        aSpan[2].innerHTML = oBox.offsetTop;
+    }
+    
+    // 初始化
+    status();
+</script>
+</html>
+
+

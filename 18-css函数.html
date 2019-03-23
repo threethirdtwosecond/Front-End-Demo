@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css函数-读取和设置css值</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        #box {height:200px;width:300px;border:1px solid orange;padding:10px;}
+        #box input {height:30px;padding:5px;text-align: center;background: orange;border:0;}
+        #box input:hover {cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div id="box">
+        <input type="button" value="Get Style" readonly="readonly">
+        <input type="button" value="Set Style" readonly="readonly">
+        <input type="button" value="Default Style" readonly="readonly">
+    </div>
+</body>
+<script>
+    function css(obj, attr, value)
+    {
+        switch (arguments.length)
+        {
+            case 2:
+                if(typeof arguments[1] == "object")
+                {	//二个参数, 如果第二个参数是对象, 批量设置属性
+                    for (var i in attr) obj.style[i] = attr[i]
+                }
+                else
+                {	//二个参数, 如果第二个参数是字符串, 读取属性值  
+                    //getComputedStyle()返回一个对象，对象属性名是css的字符串，如getComputedStyle(obj, null)["width"]
+                    return obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, null)[attr]
+                }
+                break;
+            case 3:
+                //三个参数, 单一设置属性
+                obj.style[attr] = value;
+                break;
+            default:
+                alert("参数错误！")
+        }
+    }
+    
+    var oBox = document.querySelector("#box");
+    var aInput = document.querySelectorAll("#box > input");
+    
+    aInput[0].onclick = function(){
+        // 两个参数，读取css属性 css() 两个参数，第十个参数为字符串
+        alert("width:" + css(oBox,"width") + "\nheight:" + css(oBox,"height") + "\nborder:" + css(oBox,"border"));
+    }
+    aInput[1].onclick = function(){
+        // 两个参数，css() 第二个参数为对象，赋值
+        css(oBox,{width:"300px",height:"600px",border:"1px solid #0ae"})
+        // 三个参数 属性单一设置
+        for(var i = 0; i < aInput.length; i++) css(aInput[i],"backgroundColor","#0ae")
+    }
+    aInput[2].onclick = function(){
+        //两个参数，第二个参数为对象，恢复到初始css
+        css(oBox,{width:"300px",height:"200px",border:"1px solid orange"})
+        // 三个参数，属性单一设置
+        for(var i = 0; i < aInput.length; i++) css(aInput[i],"backgroundColor","orange")
+    }
+    
+    console.log(getComputedStyle(oBox,null)["width"])
+</script>
+</html>

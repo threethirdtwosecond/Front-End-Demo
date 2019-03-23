@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>div闪烁</title>
+    <style>
+        body {display:flex;align-items:center;justify-content: center;height:100vh;}
+        #box {background:red;color:white;text-align: center;cursor: pointer;width:150px;height:150px;line-height:150px;}
+    </style>
+</head>
+
+<body>
+    <div id="box">点击我就闪烁</div>
+</body>
+<script>
+    var oBox = document.querySelector("#box")
+    var timer = null;
+    oBox.onclick = function(){
+        var i = 0;
+        timer = setInterval(function(){
+            oBox.style.display = i++ % 2 ? "none" : "block";
+            i > 6 && (clearInterval(timer))
+        },100)
+    }
+</script>
+</html>

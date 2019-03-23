@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仿微博</title>
+    <style>
+        body {background:gray;}
+        a {text-decoration: none;cursor: pointer;}
+        a:hover {text-decoration: underline;}
+        div, h2, h3, form, ul, li, p {margin:0;padding:0;}
+        #weibo {width:500px;border:1px solid;margin:0 auto;background:#fff;padding:20px 10px;}
+        #weibo form div {margin-top:10px;}
+        #weibo form div::after {content:'';display:block;clear:both;} /*清除子元素浮动*/
+        #userName {border-radius:6px;border:1px solid #d0d0d0;font:14px/1.5 Arial;float:left;}
+        #face {float:left;margin-left:10px;}
+        #face img {width:30px;height:30px;opacity: 0.5;cursor:pointer;}
+        #face img:hover {opacity: 1;}
+        #face .hover {opacity: 1;}
+        #face .current {opacity: 1;}
+        #weibo .submit p {float:right;}
+        #edit {width:100%;height:65px;box-sizing: border-box;border:1px solid #d0d0d0;border-radius:6px;}
+        #send {width:110px;height:30px;background:green;color:#fff;border:none;border-radius:10px;}
+        #list {margin-top:10px;}
+        #list::after {content:'';display:block;clear:both;}
+        #list h3 {height:35px;background:#e3eaec;position:relative;}
+        #list h3 span {background:#fff;font:14px/1.5 Arial;padding:5px 5px 0;border-radius:5px 5px 0 0;position:absolute;bottom:0;left:10px;}
+        #list ul {list-style: none;}
+        #list ul li {border-bottom:1px dotted;clear:both;float:left;width:100%;}
+        #list .userPic, #list .content {float:left;box-sizing:border-box;}
+        #list .userPic {width:15%;padding:10px 10px 5px 10px;}
+        #list .content {width:85%;padding-top:15px;}
+        #list .content .userName {display:inline;}
+        #list .content .userName a {color:aqua;font:18px Arial;text-decoration: none;}
+        #list .content .userName a:hover {text-decoration:underline;}
+        #list .content .sendMsg {font:14px Arial;display:inline;}
+        #list .content .time {font:12px Arial;color:lightblue;margin-top:5px;}
+        #list .content .time a {float:right;color:lightblue;margin-right:20px;display:none;}
+    </style>
+</head>
+
+<body>
+    <div id="weibo">
+        <form>
+            <h2>写下你想说的吧</h2>
+            <div>
+                <input type="text" id="userName">
+                <p id="face">
+                    <img src="img/32/face1.gif" class="current">
+                    <img src="img/32/face2.gif">
+                    <img src="img/32/face3.gif">
+                    <img src="img/32/face4.gif">
+                    <img src="img/32/face5.gif">
+                    <img src="img/32/face6.gif">
+                </p>
+            </div>
+            <div>
+                <textarea id="edit"></textarea>
+            </div>
+            <div class="submit">
+                <p>
+                    <span>还能输入</span>
+                    <strong id="count">140</strong>
+                    <span>个字</span>
+                    <input type="button" value="广播" id="send">
+                </p>
+            </div>
+        </form>
+        <div id="list">
+            <h3><span>大家都在说</span></h3>
+            <ul>
+                <li>
+                    <div class="userPic">
+                        <img src="img/32/face1.gif">
+                    </div>
+                    <div class="content">
+                        <div class="userName">
+                            <a href="">UserName</a> :
+                        </div>
+                        <div class="sendMsg">
+                            今天是个好天气
+                        </div>
+                        <div class="time">
+                            <span>3.16日 10:15</span>
+                            <a class="del">删除</a> 
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="userPic">
+                        <img src="img/32/face1.gif">
+                    </div>
+                    <div class="content">
+                        <div class="userName">
+                            <a href="">UserName</a> :
+                        </div>
+                        <div class="sendMsg">
+                            今天是个好天气
+                        </div>
+                        <div class="time">
+                            <span>3.16日 10:15</span>
+                            <a class="del">删除</a> 
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script>
+    // 获取 Id, class, tagName
+    var get = {
+        byId:function(id){
+            return document.querySelector(id);
+        },
+        byClass:function(sClass, oParent){
+            var aClass = [];
+            var reClass = new RegExp("(^|)" + sClass + "(|$)");
+            var aElem = this.byTagName("*", oParent);
+            for(var i = 0; i < aElem.length; i++) reClass.test(aElem[i].className) && aClass.push(aElem[i]);
+            return aClass;
+        },
+        byTagName:function(ele,obj){
+            return (obj || document).querySelectorAll(ele);
+        }
+    }
+    
+    var EventUtil = {
+        addHandler:function(oElement, sEvent, fnHandler){
+            oElement.addEventListener ? oElement.addEventListener(sEvent, fnHandler) : oElement.attachEvent("on" + sEvent, fnHandler)
+        },
+        removeHandler:function(oElement, sEvent, fnHandler){
+            oElement.removeEventListener ? oElement.removeEventListener(sEvent, fnHandler) : oElement.detachEvent("on" + sEvent, fnHandler);
+        },
+        addLoadHandler:function(fnHandler){
+            this.addHandler(window, "load", fnHandler);
+        }
+    }
+    
+    // 头像 
+    
+    EventUtil.addLoadHandler(function()
+    {
+        
+        var oWeiBo = get.byId("#weibo");
+        var oUserName = get.byId("#userName");
+        var oFace = get.byId("#face");
+        var aFace = get.byTagName("img",oFace);
+        var oEdit = get.byId("#edit");
+        var iCount = get.byId("#count");
+        var oSend = get.byId("#send");
+        var oList = get.byId("#list");
+        var oUl = get.byTagName("ul",oList)[0];
+        var aLi = get.byTagName("li", oList);
+        var timer = null;
+        var bSend = false;
+        
+        // 发送按钮绑定click事件
+        EventUtil.addHandler(oSend, "click", fnSend);
+        
+        // 绑定计数函数
+        EventUtil.addHandler(oEdit, "keyup", fnCount);
+        EventUtil.addHandler(oEdit, "keypress", fnCount);
+        
+        // 执行删除函数
+        
+        
+        // 发送函数
+        function fnSend(){
+            var reg = /^\s*$/g // 匹配开始的空白字符
+            aLi = get.byTagName("li", oList);
+            if(reg.test(oUserName.value))
+            {
+                alert("请输入姓名");
+                oUserName.focus();
+            }
+            // 用户名正则检测，2-8位的数字、字母、汉字或正蓝线
+            else if(!/^[u4e00-u9f5a\w]{2,8}$/g.test(oUserName.value))
+            {
+                alert("请输入2-8位的汉字或字母、数字");
+                oUserName.focus();
+            }
+            else if(iCount.innerHTML < 0){
+                alert("写多了！");
+            }
+            else if(reg.test(oEdit.value)){
+                alert("请输入内容");
+                oEdit.focus();
+            }
+            else 
+            {
+                var oLi = document.createElement("li");
+                var oDate = new Date();
+                oDate = oDate.getMonth() + 1 + "月" + oDate.getDate() + "日 " + oDate.getHours() + ":" + oDate.getMinutes();
+                oLi.innerHTML = `
+                                <div class="userPic">
+                                    <img src="${get.byClass("current", oFace)[0].src}">
+                                </div>
+                                <div class="content">
+                                    <div class="userName">
+                                        <a href="">${oUserName.value}</a> :
+                                    </div>
+                                    <div class="sendMsg">
+                                        ${oEdit.value}
+                                    </div>
+                                    <div class="time">
+                                        <span>${oDate}</span>
+                                        <a class="del">删除</a> 
+                                    </div>
+                                </div>
+                `;
+                
+                // 如果没有列表项目，直接添加；已有，添加到最前面
+                aLi.length ? oUl.insertBefore(oLi, aLi[0]) : oUl.appendChild(oLi);
+               
+                // 重置表单
+                get.byTagName("form", oWeiBo)[0].reset();
+                for(var i = 0; i < aFace.length; i++) aFace[i].className = "";
+                aFace[0].className = "current";
+                // 重置字数统计
+                iCount.innerHTML = 140 - oEdit.value.length;
+                
+                // 调用del(),更新 del 中的列表，否则无法删除 js 添加的列表
+                del();
+                liHover();
+            }
+        }
+        
+        // 头像
+        for(var i = 0; i < aFace.length; i++){
+            aFace[i].index = i;
+            aFace[i].onclick = function(){
+                for(var j = 0; j < aFace.length; j++) aFace[j].className = ""
+                aFace[this.index].className = "current";
+            }
+        }
+        // 统计可输入字符个数
+        function fnCount(){
+            var iLen = 140 - oEdit.value.length;
+            iLen < 0 && (iCount.style.color = "red");
+            iCount.innerHTML = iLen;
+        }
+        
+        // 删除函数
+        function del(){
+            var aLi = get.byTagName("li", oList);
+            var aDel = get.byClass("del", oList);
+            
+            for(var i = 0; i < aDel.length; i++){
+                aDel[i].onclick = function(){
+                    var oParent = this.parentNode.parentNode.parentNode;
+                    var iHeight = oParent.offsetHeight;
+                    var alpha = 100;
+                   
+                    timer = setInterval(function(){
+                        iHeight -= 10;
+                        iHeight < 0 && (iHeight = 0);
+                        oParent.style.height = iHeight + "px";
+                        iHeight == 0 && (clearInterval(timer),oUl.removeChild(oParent))
+                    },30)
+                    this.onclick = null;
+                }
+                
+            }
+            
+        }
+        del();
+        
+        function liHover(){
+            var aLi = get.byTagName("li", oList);
+            for(var i = 0; i < aLi.length; i++){
+                aLi[i].idnex = i;
+                aLi[i].onmouseover = function(){
+                    get.byClass("del", this)[0].style.display = "block"
+                }                    
+                
+                aLi[i].onmouseout = function(){
+                    get.byClass("del", this)[0].style.display = "none"
+                }
+            }
+           
+        }
+        liHover()
+    })
+    
+    
+    
+</script>
+</html>

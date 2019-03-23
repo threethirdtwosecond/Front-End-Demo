@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>求和</title>
+    <style>
+        body {display:flex;justify-content:center;}
+    </style>
+</head>
+<body>
+    <input type="text"> &nbsp; + &nbsp; <input type="text"> &nbsp; = &nbsp; <span class="result">?</span> &nbsp; <button>求和</button>
+</body>
+<script>
+    var input = document.querySelectorAll("input");
+    var result = document.querySelector(".result");
+    var count = document.querySelector('button');
+
+    for(var i = 0; i < input.length; i++) {
+        input[i].index = i;
+        input[i].onkeyup = function(){
+            this.value = this.value.replace(/[^\d]/,'');
+        }
+    }
+    count.onclick = function(){
+        var add = 0;
+        for(var i = 0; i < input.length; i++){
+            add += parseInt(input[i].value);
+        }
+        result.innerHTML = add;
+    }
+
+</script>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>demo</title>
+    <style>
+        * {margin:5px;padding: 5px;}
+        .main {
+            width:600px;
+            margin:0 auto;
+            border:1px solid;
+            background:#fff;
+        }
+        .color-menu span {
+            display: inline-block;
+            width:20px;
+            height: 20px;
+            cursor:pointer;
+        }
+        .color-menu span:nth-child(1){background: red;}
+        .color-menu span:nth-child(2){background:blue;}
+        .color-menu span:nth-child(3){background:orange;}
+    </style>
+    <script src="jquery-3.3.1/jquery-3.3.1.min.js"></script>
+    <script>
+            $(function(){
+                
+                $('.color-menu > span').click(function(){
+                    $('body').css('background',$(this).css('background'))
+                })
+            })
+            console.log('abc');
+    </script>
+</head>
+<body>
+    <div class="main">
+    	<div class="color-menu">
+    		<span></span>
+    		<span></span>
+    		<span></span>
+    	</div>
+    	<div class="nav-menu">
+    		<div>
+    			<a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+                <a href=""></a>
+    		</div>
+    	</div>
+    </div>
+    
+</body>
+</html>

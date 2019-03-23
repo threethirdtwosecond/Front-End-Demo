@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>判断是否为两位数</title>
+	<style>
+		body {display:flex;justify-content:center;}
+	</style>
+</head>
+<body>
+	<input type="text" id="number"> &nbsp;&nbsp;&nbsp; <input type="button" id="submit" value = "判断是否两位数">
+</body>
+<script>
+	var number = document.querySelector('#number');
+	var submit = document.querySelector("#submit");
+
+	number.onkeyup = function(){
+		this.value = this.value.replace(/[^\d]/,'');
+	}
+
+	submit.onclick = function(){
+		number.value == "" ? alert("请输入数字") : alert(/^\d{2}$/.test(parseInt(number.value)) ? "这是两位数" : "这是" + number.value.length + "位数")
+	}
+</script>
+</html>

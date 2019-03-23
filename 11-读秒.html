@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>读秒</title>
+    <style>
+        body {display:flex;justify-content:center;align-items: center;flex-direction: column;}
+        #countdown {font-weight:700;font-size:3em;}
+        #stop {height:50px;ont-weight:700;font-size:1.5em;}
+    </style>
+</head>
+<body>
+    <span id="countdown">0</span> 
+    <input type="button" id="stop" value="Stop">
+</body>
+<script>
+    var count_down = document.querySelector('#countdown');
+    var stop = document.querySelector('#stop');
+    var is_stop = true;
+
+    var timer = function(){
+        count_down.innerHTML = parseInt(count_down.innerHTML) + 1;
+    }
+    var start = null;
+    if(is_stop) start = setInterval(timer,1000);
+    stop.onclick = function(){
+        if(is_stop) {
+            clearInterval(start);
+            is_stop = false;
+            stop.value = "continue";
+        } else {
+            start = setInterval(timer,1000);
+            is_stop = true;
+            stop.value = "stop";
+        }
+        console.log(is_stop)
+    }
+</script>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星级评分系统</title>
+    <style>
+        body,div,ul,li,p {margin:0;padding:0;}
+        body {font:12px/1.5 Arial;}
+        #star {position:relative;width:600px;margin:10px auto;}
+        #star ul, #star span {float:left;display:inline;height:19px;line-height:19px;}
+        #star ul {margin:0 10px;list-style:none;}
+        #star ul li {float:left;width:24px;background:url(img/star.png) no-repeat;cursor: pointer;text-indent: 100%; white-space: nowrap; overflow: hidden;}
+        #star li.on {background-position:0 -28px;}
+        #star p {position:absolute;top:20px;width:159px;height:60px;display:none;background:url(img/icon.gif) no-repeat;padding:7px 10px 0;}
+        #star strong {color:#f60;display:block;font-family:normal;color:red;display:inline;}
+    </style>
+</head>
+
+<body>
+    <div id="star">
+        <span>点击星星就能打分</span>
+        <ul>
+            <li><a href="javascript::">1</a></li>
+            <li><a href="javascript::">2</a></li>
+            <li><a href="javascript::">3</a></li>
+            <li><a href="javascript::">4</a></li>
+            <li><a href="javascript::">5</a></li>
+        </ul>
+        <span></span>
+        <p></p>
+    </div>
+</body>
+<script>
+    var oStar = document.querySelector("#star");
+    var aLi = document.querySelectorAll("li");
+    var oUl = document.querySelector("ul");
+    var oSpan = document.querySelectorAll("span")[1];
+    var oP = oStar.querySelector("p");
+    var i = iScore = iStar = 0;
+    var aMsg = [
+				"很不满意|差得太离谱，与卖家描述的严重不符，非常不满",
+				"不满意|部分有破损，与卖家描述的不符，不满意",
+				"一般|质量一般，没有卖家描述的那么好",
+				"满意|质量不错，与卖家描述的基本一致，还是挺满意的",
+				"非常满意|质量非常好，与卖家描述的完全一致，非常满意"
+				]
+    
+    for(i = 1; i <= aLi.length; i++) {
+        aLi[i - 1].index = i;
+        // 鼠标悬浮
+        aLi[i-1].onmouseover = function(){
+            fnScore(this.index)
+            oP.style.display = "block"
+            oP.style.left = oUl.offsetLeft + (this.index) * this.offsetWidth - (oP.offsetWidth / 2 + this.offsetWidth / 2) + "px"
+            oP.innerHTML = `<strong>${aMsg[this.index - 1].split("，")[0]}</strong><br>${aMsg[this.index - 1].split("，")[1]}`
+        }
+        
+        // 鼠标离开恢复到上次得分
+        aLi[i-1].onmouseout = function(){
+            fnScore()
+            oP.style.display = "none"
+        }
+        
+        // 鼠标点击得分并记录
+        aLi[i-1].onclick = function(){
+            iStar = this.index
+            oSpan.innerHTML = `<strong>${this.index}分</strong>(${aMsg[this.index - 1]})`;
+            oP.style.display = "none"
+        }
+    }
+    
+    function fnScore(iArg){
+        iScore = iArg || iStar;
+        for(i = 0; i < aLi.length; i++) aLi[i].className = i < iScore ? "on" : ""
+    }
+</script>
+</html>

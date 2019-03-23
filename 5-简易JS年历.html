@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>简易JS年历</title>
+    <style>
+        body { display:flex;justify-content:center }
+        .calendar {background:gray;padding:10px;}
+        .calendar .date {display:grid;grid-gap:10px;grid-template:repeat(3,50px) / repeat(4,50px);background:#fff;
+            padding:10px;}
+        .calendar > .date > .item {border:1px solid;display:flex;align-items:center;justify-content:center;}
+        .item > div {text-align:center;line-height:1.2;font-size:14px;}
+        .item:hover {}
+        .calendar .description {background:lightgray;display:flex;align-items:center;justify-content:center;            color:#333;min-height:50px;margin-top:10px;padding:10px;box-sizing:border-box;width:250px;}
+        .current {background:#333;color:#fff;cursor:pointer;}
+    </style>
+</head>
+<body>
+    <div class="calendar">
+        <div class="date">
+            <div class="item">
+                <div>
+                    <strong>1</strong> <br> Jan
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>2</strong> <br> Feb
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>3</strong> <br> Mar
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>4</strong> <br> April
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>5</strong> <br> May
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>6</strong> <br> June
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>7</strong> <br> July
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>8</strong> <br> Oug
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>9</strong> <br> Sep
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>10</strong> <br> Oct
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>11</strong> <br> Nov
+                </div>
+            </div>
+            <div class="item">
+                <div>
+                    <strong>12</strong> <br> Dec
+                </div>
+            </div>
+        </div>
+        <div class="description"></div>
+    </div>
+</body>
+<script>
+    var items = document.querySelectorAll('.date > .item');
+    var des = document.querySelector('.description');
+    var nums = document.querySelectorAll('.item  strong');
+    var data = [
+        "元旦：1月1日至3日放假三天。",
+        "春节：2月2日至8日放假7天。",
+        "妇女节：3月8日妇女节，与我无关。",
+        "清明节：4月3日至5日放假3天",
+        "劳动节：4月30日至5月2日放假3天。",
+        "端午节：6月4日至6日放假3天。",
+        "小暑：7月7日小暑。不放假。",
+        "七夕节：8月6日七夕节。不放假。",
+        "中秋节：9月10日至12日放假3天。",
+        "国庆节：10月1日至7日放假7天。",
+        "立冬：11月8日立冬。不放假。",
+        "艾滋病日:12月1日<br />废除奴隶制国际日:12月2日。"
+    ];
+    for(var i = 0; i < items.length; i++) {
+        items[i].index = i;
+        items[i].onmouseover = function() {
+            for(var i = 0; i < items.length; i++) items[i].classList.remove('current');
+            items[this.index].classList.add('current');
+            des.innerHTML = nums[this.index].innerHTML + "月节日  "  + data[this.index];
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>全选 / 全不选</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        .select {border:1px solid;padding:10px;font-size:14px;}
+        .header {border-bottom:2px solid;margin-bottom:10px;padding-bottom:10px;}
+        .header a {text-decoration:none;color:#0ae;}
+        #unselect {color:#0ae}
+        #unselect:hover {cursor:pointer;}
+        .list {line-height:2.5;}
+    </style>
+</head>
+<body>
+    <div class="select">
+        <div class="header">
+            <input type="checkbox" id="SelectAll">
+            <label for="SelectAll"><strong>全选</strong></label>
+            &nbsp;&nbsp;
+            <span id="unselect">反选</span>
+        </div>
+        <div class="list">
+            <div>
+                <input type="checkbox">
+                <label for="">选项1</label>
+            </div>
+            <div>
+                <input type="checkbox">
+                <label for="">选项2</label>
+            </div>
+            <div>
+                <input type="checkbox">
+                <label for="">选项3</label>
+            </div>
+            <div>
+                <input type="checkbox">
+                <label for="">选项4</label>
+            </div>
+            <div>
+                <input type="checkbox">
+                <label for="">选项5</label>
+            </div>
+            <div>
+                <input type="checkbox">
+                <label for="">选项6</label>
+            </div>
+            <div>
+                <input type="checkbox">
+                <label for="">选项7</label>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var select_all = document.querySelector('#SelectAll');
+    var check_list = document.querySelectorAll(".list input");
+    var unselect = document.querySelector("#unselect");
+
+    select_all.onclick = function (){
+        for(var i = 0; i < check_list.length; i++) {
+            check_list[i].checked = select_all.checked;
+        }
+    }
+    unselect.onclick = function(){
+        select_all.checked = false;
+        for (var i = 0; i < check_list.length; i++) {
+            check_list[i].checked = !check_list[i].checked;
+        }
+    }
+</script>
+</html>

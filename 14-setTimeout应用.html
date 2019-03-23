@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body {display:flex;justify-content:center;}    
+        a {text-decoration:none;}
+        a:hover {text-decoration:underline;}
+        #nav {}
+        #nav ul {list-style:none;position:relative;padding:0;}
+        #nav ul li::after {content:'';display:block;clear:both;}
+        #nav ul li {float:left;margin:0 5px;}
+        #nav .subnav {position:absolute;white-space:nowrap;display:none;}
+        #nav .subnav .arrow {border-bottom:10px solid lightblue;border-left:10px solid transparent;border-right:10px solid transparent;position:absolute;top:0;transform: translate(0,7px);}
+        #nav .subnav p {background:lightblue;border-radius:10px;}
+        #nav .subnav a {display:inline-block;padding:3px;}
+    </style>
+</head>
+<body>
+    <div id="nav">
+        <ul>
+            <li>
+                <a href="javascript::">站长之家</a>
+                <div class="subnav">
+                    <em class="arrow"></em>
+                    <p>
+                        <a href="javascript::">业界动态</a>
+                        <a href="javascript::">业界动态</a>
+                        <a href="javascript::">业界动态</a>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <a href="javascript::">站长之家</a>
+                <div class="subnav">
+                    <em class="arrow"></em>
+                    <p>
+                        <a href="javascript::">喵了个咪</a>
+                        <a href="javascript::">喵了个咪</a>
+                        
+                    </p>
+                </div>
+            </li>
+            <li>
+                <a href="javascript::">站长之家</a>
+                <div class="subnav">
+                    <em class="arrow"></em>
+                    <p>
+                        <a href="javascript::">很好吃啊</a>
+                        <a href="javascript::">很好吃啊</a>
+                        <a href="javascript::">很好吃啊</a>
+                        
+                    </p>
+                </div>
+            </li>
+            <li>
+                <a href="javascript::">站长之家</a>
+                <div class="subnav">
+                    <em class="arrow"></em>
+                    <p>
+                        <a href="javascript::">前端之家</a>
+                        <a href="javascript::">前端之家</a>
+                        <a href="javascript::">前端之家</a>
+                        
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    var get = {
+        byId: function (id) {
+            return document.getElementById(id)
+        },
+        byClass: function (sClass, oParent) { //var aSubNav = get.byClass("subnav", oNav);
+            var aClass = [];
+            var reClass = new RegExp("(^| )" + sClass + "( |$)");
+            var aElem = this.byTagName("*", oParent); //
+            for (var i = 0; i < aElem.length; i++) reClass.test(aElem[i].className) && aClass.push(aElem[i]);
+            return aClass
+        },
+        byTagName: function (elem, obj) {
+            return (obj || document).getElementsByTagName(elem)
+        }
+    };
+
+    var nav = get.byId("nav");
+    var li = get.byTagName("li",nav);
+    var subnav = get.byClass("subnav",nav);
+    var oSubnav = oEm = timer = null;
+    var i = 0;
+
+    for(i = 0; i < li.length; i++){
+        li[i].onmouseover = function(){
+            for(i = 0; i < li.length; i++) subnav[i].style.display = "none";
+
+            oSubnav = get.byClass("subnav",this)[0];
+
+            oEm = get.byClass("arrow",this)[0];
+
+            oSubnav.style.display = "block";
+
+            nav.offsetWidth - this.offsetLeft > oSubnav.offsetWidth ? oSubnav.style.left = this.offsetLeft + "px" : oSubnav.style.right = 0;
+
+            oEm.style.left = this.offsetLeft - oSubnav.offsetLeft + (this.offsetWidth - oEm.offsetWidth) / 2 + "px";
+            clearTimeout(timer);
+            
+            oSubnav.onmousover = function(event){
+                (event || window.event).cancelBubble = true;
+                clearTimeout(timer);
+            }
+        }
+
+        li[i].onmouseout = function(){
+            timer = setTimeout(() => {
+                oSubnav.style.display = "none";
+            },300)
+        }
+    }
+</script>
+</html>

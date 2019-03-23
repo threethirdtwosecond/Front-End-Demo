@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>按下按键显示keycode</title>
+    <style>
+        body {display:flex;justify-content: center;flex-direction: column;}
+        span {font-size: 2em;font-weight:700;align-self: center;}
+        pre {border:1px dashed green;color:green;background:lightgray;width:100%;line-height: 2em;}
+    </style>
+</head>
+
+<body>
+   <pre>
+       &lt;script&gt;
+            var oSpan = document.querySelector("span");
+            document.onkeyup = function(event){
+                var event = event || window.event;
+                oSpan.innerHTML = event.keyCode;
+                return false;
+            }
+        &lt;/script&gt;
+   </pre>
+    <span>按下任意键将显示该键的keycode</span>
+</body>
+<script>
+    var oSpan = document.querySelector("span");
+    
+    document.onkeyup = function(event){
+        var event = event || window.event;
+        oSpan.innerHTML = event.keyCode;
+        console.log(aNot.indexOf(event.keyCode))
+        return false;
+    }
+    // 有个问题没有解决 如何排除一些按键？
+    /*
+    var aNot = [9,20,17]
+    oSpan.innerHTML = aNot.indexOf(event.keyCode) "" : event.keyCode
+    */
+</script>
+</html>

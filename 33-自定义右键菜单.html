@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自定义右键菜单</title>
+    <style>
+        body {font:12px/1.5 Arial;height:100vh;}
+        div, ul, li, p {margin:0;padding:0;}
+        #menu {border:1px solid;position:absolute;display:none;} 
+        #menu ul {list-style-type: none;}
+        #menu ul li {height:24px;line-height: 24px;padding:0 20px;cursor:pointer;}
+        #menu .first {position:relative;}
+        #menu .second {position:absolute;display: none;border:1px solid;}
+        #menu .second li {white-space: nowrap;border-bottom:0.5px solid;}
+        #menu li:hover {border:1px solid;}
+        .more {position:absolute;right:10px;border-left:5px solid;border-top:5px solid transparent;border-bottom:5px solid transparent;top:50%;transform:translate(0,-50%)}
+    </style>
+</head>
+
+<body>
+    <div id="menu">
+        <ul>
+            <li><storng><strong>Javascript学习</strong></storng></li>
+            <li class="first">
+                <p>第一课</p>
+                <i class="more"></i>
+                <ul class="second">
+                    <li>对象</li>
+                    <li>函数</li>
+                    <li>基本数据类型了了了了了</li>
+                </ul>
+            </li>
+            <li class="first">
+                <i class="more"></i>
+                <p>第二课</p>
+                 <ul class="second">
+                    <li>第一课</li>
+                    <li>函数</li>
+                    <li>基本数据类型</li>
+                </ul>
+            </li>
+            <li class="first">
+                <i class="more"></i>
+                <p>第三课</p>
+                <ul class="second">
+                    <li>轮播图</li>
+                    <li>导航条</li>
+                    <li>setInterval</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+<script>
+    var oMenu = document.querySelector("#menu");
+    var aFirst = document.querySelectorAll(".first");
+    var aSecond = document.querySelectorAll(".second");
+    
+    const aMax = [document.documentElement.offsetWidth,document.documentElement.offsetHeight]
+    
+    for(let i = 0; i < aFirst.length; i++){
+        // 鼠标划过显示 
+        aFirst[i].onmouseover = function(e){
+            
+            aSecond[i].style.display = 'block';
+            aSecond[i].style.left = this.offsetWidth + "px";
+            aSecond[i].style.top = 0;
+            aMax[0] - oMenu.offsetLeft - oMenu.offsetWidth < aSecond[i].offsetWidth && 
+                (aSecond[i].style.left = -aSecond[i].offsetWidth + "px");
+            aMax[1] - oMenu.offsetTop - oMenu.offsetHeight < aSecond[i].offsetHeight && 
+                (aSecond[i].style.top = -(aSecond[i].offsetHeight - this.offsetHeight) + "px");
+            
+        }
+        
+        // 鼠标离开消失
+        aFirst[i].onmouseout = function(){
+            aSecond[i].style.display = "none"
+        }
+    }
+    
+    
+    // 点击右键显示菜单
+    document.oncontextmenu = function(e){
+        oMenu.style.display = "block";
+        oMenu.style.left = e.clientX + "px";
+        oMenu.style.top = e.clientY + "px";
+        
+        // 防止溢出
+        aMax[0] - e.clientX < oMenu.offsetWidth && (oMenu.style.left = e.clientX - oMenu.offsetWidth + "px");
+        aMax[1] - e.clientY < oMenu.offsetHeight && (oMenu.style.top = e.clientY - oMenu.offsetHeight + "px");
+        
+        // 阻止默认事件
+        return false;
+    }
+    
+    // 点击空白区域菜单消失
+    document.onclick = function(){
+         oMenu.style.display = "none"
+    }
+</script>
+</html>

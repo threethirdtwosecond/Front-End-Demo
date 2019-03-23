@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>当前输入框高亮显示</title>
+    <style>
+        body {display:flex;justify-content: center;}
+        form {border:1px solid orange;width:400px;background:}
+        form h2 {padding:5px;color:orange;border-bottom:2px solid orange;margin:0;}
+        form p {width:100%;}
+        form label {font-size:1.2em;font-weight:700;width:100px;height:30px;text-align:right;float:left;margin-right:10px;}
+        form .focus {background:#0ae;}
+    </style>
+</head>
+
+<body>
+    <form action="">
+        <h2>用户登陆</h2>
+        <p>
+            <label for="">用户名</label>
+            <input type="text">
+        </p>
+        <p>
+            <label for="">密码</label>
+            <input type="text">
+        </p>
+    </form>
+</body>
+<script>
+    var aInput = document.querySelectorAll("input");
+    
+    for(var i = 0; i < aInput.length; i++){
+        aInput[i].onfocus = function(){
+            
+            this.className = "focus"
+        }
+        
+        aInput[i].onblur = function(){
+            this.className = "";
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>比较input中的两个数字的大小</title>
+    <style>
+        body {display:flex;justify-content:center;}
+        * {margin-right:20px;}
+        input[type="text"] {width:40px;}
+        .result {color:red;}
+    </style>
+</head>
+<body>
+    <input type="text" class="f-text"> <span>vs</span> <input type="text" class="f-text"> <input type="button" value="最大的数是" class="f-btn"> <span class="result">?</span>
+</body>
+<script>
+    var f_text = document.querySelectorAll(".f-text");
+    var f_btn = document.querySelector(".f-btn");
+    var result = document.querySelector(".result");
+
+    f_btn.onclick = function(){
+        result.innerHTML = Math.max(f_text[0].value, f_text[1].value);
+    }
+</script>
+</html>

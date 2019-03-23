@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鼠标点击显示坐标</title>
+    <style>
+        pre {border:1px dashed green;background:lightgray;}
+    </style>
+</head>
+    
+<body>
+    <pre>
+       
+        &lt;script&gt;
+            document.onclick = function(event){
+                var event = event || window.event;
+                alert(`坐标：[${event.clientX},${event.clientY}]`)
+            }
+        &lt;/script&gt;
+    </pre>
+</body>
+<script>
+    document.onclick = function(event){
+        var event = event || window.event;
+        alert(`坐标：[${event.clientX},${event.clientY}]`)
+    }
+    
+</script>
+</html>

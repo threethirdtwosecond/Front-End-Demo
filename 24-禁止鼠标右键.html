@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>禁止鼠标右键</title>
+    <style>
+        pre {width:100%;border:1px dashed green;color:green;background:lightgray;line-height: 2em;font-size:1.5em;}
+    </style>
+</head>
+
+<body>
+    <pre>
+       document.oncontextmenu = function(){
+            return false;
+        }
+        <hr>
+        window.oncontextmenu = (e) => {
+          e.preventDefault();
+        }
+    </pre>
+</body>
+<script>
+    /*
+    document.oncontextmenu = function(){
+        return false;
+    }
+    */
+    window.oncontextmenu = (e) => {
+      e.preventDefault();
+    }
+</script>
+</html>

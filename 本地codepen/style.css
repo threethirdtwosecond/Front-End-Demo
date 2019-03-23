@@ -1,0 +1,12 @@
+textarea {
+    
+    width:32.8%;
+    height:50vh;
+    float:left;
+}
+iframe {
+    width:100%;
+    min-height:50vh;
+    overflow-y:scroll;
+    border:1px solid;
+}
