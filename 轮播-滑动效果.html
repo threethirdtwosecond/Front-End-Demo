@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮播滑动效果</title>
+    <style>
+        body {background:black;display: flex;justify-content: center;}
+        div,ul,li {margin:0;padding:0;}
+        ul {list-style-type:none}
+        #box {padding:10px;background:#fff;position:relative;}
+        #box .list {width:500px;height:200px;overflow:hidden;position:relative;}
+        #box .list ul {position:absolute;top:0;}
+        #box .list img {width:100%;height:200px;display:block;}
+        #box .count {position: absolute;right:20px;bottom:10px;}
+        #box .count li {float:left;width:30px;height:30px;border-radius:50%;background:#fff;text-align: center;line-height:30px;margin-right:5px;cursor:pointer;}
+        #box .count li.current {background:orange;color:#fff;}
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div class="list">
+            <ul>
+                <li><img src="https://s2.ax1x.com/2019/03/23/AG0fuq.jpg" alt="AG0fuq.jpg" border="0"></li>
+                <li><img src="https://s2.ax1x.com/2019/03/23/AG04bV.jpg" alt="AG04bV.jpg" border="0"></li>
+                <li><img src="https://s2.ax1x.com/2019/03/23/AG0hD0.jpg" alt="AG0hD0.jpg" border="0"></li>
+                <li><img src="https://s2.ax1x.com/2019/03/23/AG0Rvn.jpg" alt="AG0Rvn.jpg" border="0"></li>
+                <li><img src="https://s2.ax1x.com/2019/03/23/AG02gs.jpg" alt="AG02gs.jpg" border="0"></li>
+            </ul>
+        </div>
+    </div>    
+</body>
+<script>
+    // 声明变量
+    var oBox = document.querySelector("#box");
+    var oList = oBox.querySelector(".list");
+    var oUl = oBox.querySelector("ul");
+    var aLi = oBox.querySelector("li");
+    var aImg = oBox.querySelectorAll("img");
+    var aPush = []; // 添加计数的HTML代码
+    var timer = playTimer = null;
+    var bOrder = true;
+    // 添加计数
+    for(var i = 0; i < aImg.length; i++) aPush.push(`<li>${i + 1}</li>`);
+    var oCount = document.createElement("ul");
+    oCount.className = "count";
+    oCount.innerHTML = aPush.join("") //将 aPush 数组中的元素拼接成一个字符串
+    oBox.appendChild(oCount);
+    oBox.querySelector(".count > li").className = "current"
+    
+    var aBtn = oBox.querySelectorAll(".count > li");
+    
+    // 鼠标划过数字切换
+    for(let i = 0; i < aBtn.length; i++){
+        aBtn[i].onmouseover = function(){
+            
+            aBtn.forEach((e) => e.className = "");       
+            this.className = "current";
+            
+            startMove(-(i * aImg[0].offsetHeight))
+            
+        }
+    }
+    // 鼠标移入停止自动播放
+    oBox.onmouseover = function(){
+        clearInterval(playTimer)
+    }
+    
+    // 鼠标离开开始自动播放
+    oBox.onmouseout = function(){
+        playTimer = setInterval(next,3000);
+    }
+    
+    
+    
+    let index = 0
+    
+    function next(){
+        
+        bOrder ? index++ : index--;
+        index >= aImg.length - 1 && (bOrder = false,index = aImg.length - 1);
+        index <= 0 && (bOrder = true,index = 0);
+        aBtn.forEach(e => e.className = "");
+        aBtn[index].className = "current"
+        console.log(index)
+        startMove(-(index * aImg[0].offsetHeight));
+    }
+    
+    playTimer = setInterval(next,3000);
+    
+    function startMove(iTarget){
+        clearInterval(timer);// 停止正在进行的timer，以防止中途切换失败
+        timer = setInterval(function(){doMove(iTarget)},30)
+    }
+    // function test
+    function doMove(iTarget){
+        var iMove = (iTarget - oUl.offsetTop) / 10;
+        iMove = iMove > 0 ? Math.ceil(iMove) : Math.floor(iMove);
+        oUl.offsetTop == iTarget ? clearInterval(timer) : oUl.style.top = oUl.offsetTop + iMove + "px"
+    }
+    
+</script>
+</html>
+
+<!--
+https://imgchr.com/i/AG0fuq
+https://imgchr.com/i/AG04bV
+https://imgchr.com/i/AG0hD0
+https://imgchr.com/i/AG0Rvn
+https://imgchr.com/i/AG02gs
+-->
+
+
+

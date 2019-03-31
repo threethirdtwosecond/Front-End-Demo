@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.0/jquery-ui.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <title>Random Quotes</title>
+    <style>
+        body {display:flex;align-items: center;justify-content: center;height:100vh;}
+        a {text-decoration: none;}
+        #quote-box {padding:40px 50px;width:450px;border:1px solid;background:#fff;animation: fade 0.5s;}
+        .quote-text {font-size:1.75em;font-weight: 700;width:100%;text-align: center;padding:10px;}
+        .quote-text::before {content:'"'}
+        .quote-author {font-size:1em;width:450px;text-align: right;padding:5px;}
+        .buttons {width:100%;overflow: hidden;margin-top:10px;padding:5px;}
+        .buttons .button {height:50px;text-align: center;line-height: 50px;color:#fff;background:black;font-size:1.5em;border:0;border-radius:3px;}
+        #tweet-quote, #tumblr-quote {float:left;margin-right:10px;width:50px;}
+        #new-quote {float:right;}
+        @keyframes fade {from {opacity: 0.25} to {opacity: 1}}
+    </style>
+</head>
+
+<body>
+    <div id="quote-box">
+       <div class="quote-text">
+           <span id="text">Quote</span>
+       </div>
+        <div class="quote-author">
+            -<span id="author">Author</span>
+        </div>
+        <div class="buttons">
+            <a href="" id="tweet-quote" class="button">
+                <i class="fa fa-twitter"></i>
+            </a>
+            <a href="" id="tumblr-quote" class="button">
+                <i class="fa fa-tumblr"></i>
+            </a>
+            <button class="button" id="new-quote">New Quote</button>
+        </div>
+    </div>
+</body>
+<script>
+    var aColors = ['#16a085', '#27ae60', '#2c3e50', '#f39c12', '#e74c3c', '#9b59b6', '#FB6964', '#342224', "#472E32", "#BDBB99", "#77B1A9", "#73A857"];
+    var sQuote = "", sAuthor = "", quotesData;
+    
+    function getQuotes(){
+        return $.ajax({
+           headers:{
+              Accept: "application/json" 
+           },
+            url:"https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json",
+            success: function(data){
+                quotesData = JSON.parse(data)
+                console.log(quotesData.quotes[Math.floor(Math.random() * quotesData.quotes.length)])
+            }
+        })
+    }
+    
+    function getRandomQuote(){
+        var random_quote = quotesData.quotes[Math.floor(Math.random() * quotesData.quotes.length)]
+
+        sQuote = random_quote.quote;
+        sAuthor= random_quote.author; 
+        
+        
+        $(".quote-text").animate(
+            {opacity:0.25},
+            500,
+            function(){ 
+                $(this).animate({opacity: 1}, 500);
+                $("#text").html(sQuote);
+            }
+        )
+        
+        $(".quote-author").animate(
+            {opacity:0.25},
+            500,
+            function(){ 
+                $(this).animate({opacity: 1}, 500);
+                $("#author").html(sAuthor);
+            }
+        )
+        
+        var rand_color = aColors[Math.floor(Math.random() * aColors.length)];
+        console.log(rand_color);
+        $("html body").animate(
+            {
+                backgroundColor:rand_color,
+                color:rand_color
+            },
+            1000,
+           
+        );
+        
+        $(".button").animate(
+            {backgroundColor: rand_color},
+            1000
+        )
+    }
+    
+    
+    $(function(){
+        getQuotes().then(() => {getRandomQuote()})
+        
+        $("#new-quote").on("click", getRandomQuote)
+        
+        $("#tweet-quote").click(function(){
+            window.open('https://twitter.com/intent/tweet?hashtags=quotes&related=freecodecamp&text=' + encodeURIComponent('"' + sQuote + '"' + sAuthor))
+        })
+        
+        $("#tumblr-quote").click(function(){
+            window.open('https://www.tumblr.com/widgets/share/tool?posttype=quote&tags=quotes,freecodecamp&caption='+encodeURIComponent(sQuote)+'&content=' + encodeURIComponent(sAuthor)+'&canonicalUrl=https%3A%2F%2Fwww.tumblr.com%2Fbuttons&shareSource=tumblr_share_button')
+        })
+        
+    })
+    
+    
+    
+    
+    
+ 
+</script>
+</html>
+
+
+
+
